@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: catalog-service
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  datasource:
+    url: "jdbc:postgresql://localhost:5435/catalog-service"
+    username: postgres
+    password: test
