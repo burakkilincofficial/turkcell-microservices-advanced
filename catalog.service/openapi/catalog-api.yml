@@ -5,12 +5,16 @@ info:
   version: 1.0.0
 servers:
   - url: http://localhost:8080
+tags:
+  - name: CatalogApi
 
 paths:
   /api/v1/products:
     post:
       summary: This endpoint creates a new product in database if request is valid.
       operationId: createProduct
+      tags:
+        - Products
       requestBody:
         required: true
         content:
