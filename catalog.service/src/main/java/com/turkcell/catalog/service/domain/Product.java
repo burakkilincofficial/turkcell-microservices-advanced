@@ -2,6 +2,7 @@ package com.turkcell.catalog.service.domain;
 
 import java.time.OffsetDateTime;
 import java.util.Objects;
+import java.util.UUID;
 
 // Aggregate Root
 public class Product {
@@ -11,6 +12,19 @@ public class Product {
     private Money price;
     private OffsetDateTime createdAt;
     private OffsetDateTime updatedAt;
+
+    public Product(String name,
+                   String description,
+                   Money price,
+                   OffsetDateTime createdAt,
+                   OffsetDateTime updatedAt) {
+        this.id = new ProductId(UUID.randomUUID());
+        rename(name);
+        redescribe(description);
+        reprice(price);
+        this.createdAt = createdAt != null ? createdAt : OffsetDateTime.now();
+        this.updatedAt = updatedAt != null ? updatedAt : OffsetDateTime.now();
+    }
 
     public Product(ProductId id,
                    String name,

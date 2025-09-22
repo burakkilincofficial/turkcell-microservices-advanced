@@ -1,6 +1,8 @@
 package com.turkcell.catalog.service.application.port.out;
 
-// Hizmetleri sunabilmem için aşağıdaki kuralları uygulayan bir sarmallayıcı vermelisin.
-public interface ProductRepository { }
+import com.turkcell.catalog.service.domain.Product;
 
-// 14:00
+// Hizmetleri sunabilmem için aşağıdaki kuralları uygulayan bir sarmallayıcı vermelisin.
+public interface ProductRepository {
+    Product save(Product product);
+}
