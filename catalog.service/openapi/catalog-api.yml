@@ -1,0 +1,61 @@
+openapi: 3.0.3
+
+info:
+  title: Catalog API
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+
+paths:
+  /api/v1/products:
+    post:
+      summary: This endpoint creates a new product in database if request is valid.
+      operationId: createProduct
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductCreateRequest'
+            examples:
+              sample:
+                value:
+                  name: "Klavye"
+                  description: "Mekanik RGB Klavye ürünü."
+                  price: 149.90
+      responses:
+        "201":
+          description: Created Product
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    ErrorResponse:
+      type: object
+      required: [code,message]
+      properties:
+        code: {type: string}
+        message: {type: string}
+    Product:
+      type: object
+      required: [ id, name, price ]
+      properties:
+        id: { type: string, format: uuid }
+        name: { type: string, minLength: 1, maxLength: 255 }
+        price: { type: number, format: double, minimum: 0 }
+        description: { type: string, maxLength: 2000 }
+    ProductCreateRequest:
+      type: object
+      required: [name,price]
+      properties:
+        name:  { type: string, minLength: 1, maxLength: 255 }
+        price: { type: number, format: double, minimum: 0 }
+        description: { type: string, maxLength: 2000 }
