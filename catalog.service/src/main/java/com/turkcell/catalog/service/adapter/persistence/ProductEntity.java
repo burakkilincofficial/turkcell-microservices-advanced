@@ -3,6 +3,7 @@ package com.turkcell.catalog.service.adapter.persistence;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.UuidGenerator;
 
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -15,7 +16,6 @@ public class ProductEntity
 {
     // Primitive/Supported Type -> UUID,BigDecimal,String
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private UUID id;
     private String name;
     private String description;
