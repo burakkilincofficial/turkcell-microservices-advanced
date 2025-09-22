@@ -112,6 +112,26 @@
 						<phase>generate-sources</phase>
 						<goals><goal>generate</goal></goals>
 						<configuration>
+							<inputSpec>${project.basedir}/openapi/catalog-api-v2.yml</inputSpec>
+							<generatorName>spring</generatorName>
+							<apiPackage>com.turkcell.catalog.service.generated.api</apiPackage>
+							<modelPackage>com.turkcell.catalog.service.generated.model</modelPackage>
+							<invokerPackage>com.turkcell.catalog.service.generated.invoker</invokerPackage>
+							<output>${project.build.directory}/generated-sources/openapi</output>
+							<configOptions>
+								<interfaceOnly>true</interfaceOnly>
+								<useSpringBoot3>true</useSpringBoot3>
+								<useTags>true</useTags>
+								<dateLibrary>java8</dateLibrary>
+								<performBeanValidation>true</performBeanValidation>
+							</configOptions>
+						</configuration>
+					</execution>
+					<execution>
+						<id>generate-catalog-api-v2</id>
+						<phase>generate-sources</phase>
+						<goals><goal>generate</goal></goals>
+						<configuration>
 							<inputSpec>${project.basedir}/openapi/catalog-api.yml</inputSpec>
 							<generatorName>spring</generatorName>
 							<apiPackage>com.turkcell.catalog.service.generated.api</apiPackage>

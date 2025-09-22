@@ -20,7 +20,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/WebProductCreateRequest'
+              $ref: '#/components/schemas/WebProductCreateRequestV2'
             examples:
               sample:
                 value:
@@ -33,22 +33,22 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/WebProductResponse'
+                $ref: '#/components/schemas/WebProductResponseV2'
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: '#/components/schemas/ErrorResponseV2'
 components:
   schemas:
-    ErrorResponse:
+    ErrorResponseV2:
       type: object
       required: [code,message]
       properties:
         code: {type: string}
         message: {type: string}
-    WebProductResponse:
+    WebProductResponseV2:
       type: object
       required: [ id, name, price,currency ]
       properties:
@@ -57,7 +57,7 @@ components:
         price: { type: number, format: BigDecimal, minimum: 0 }
         description: { type: string, maxLength: 2000 }
         currency: { type: string, maxLength: 10 }
-    WebProductCreateRequest:
+    WebProductCreateRequestV2:
       type: object
       required: [name,price,currency]
       properties:
