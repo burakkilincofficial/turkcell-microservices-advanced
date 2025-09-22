@@ -18,6 +18,7 @@ public class ProductRepositoryAdapter  implements ProductRepository
     @Override
     public Product save(Product product) {
         ProductEntity productEntity = new ProductEntity();
+        productEntity.setId(product.id().value());
         productEntity.setPrice(product.price().amount());
         productEntity.setCurrency(product.price().currency());
         productEntity.setDescription(product.description());

@@ -2,8 +2,8 @@ package com.turkcell.catalog.service.adapter.web;
 
 import com.turkcell.catalog.service.application.port.in.ProductUseCase;
 import com.turkcell.catalog.service.generated.api.ProductsApi;
-import com.turkcell.catalog.service.generated.model.Product;
-import com.turkcell.catalog.service.generated.model.ProductCreateRequest;
+import com.turkcell.catalog.service.generated.model.WebProductCreateRequest;
+import com.turkcell.catalog.service.generated.model.WebProductResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,19 +20,21 @@ public class ProductsController implements ProductsApi
     }
 
     @Override
-    public ResponseEntity<Product> createProduct(ProductCreateRequest productCreateRequest) {
+    public ResponseEntity<WebProductResponse> createProduct(WebProductCreateRequest productCreateRequest) {
         var command = new ProductUseCase.CreateProductCommand(
                 productCreateRequest.getName(),
                 productCreateRequest.getDescription(),
-                new BigDecimal(300),
-                "TRY"
+                productCreateRequest.getPrice(),
+                productCreateRequest.getCurrency()
         );
 
         var product = productUseCase.createProduct(command);
 
-        Product productResponse = new Product();
+        WebProductResponse productResponse = new WebProductResponse();
         productResponse.name(product.name());
         productResponse.description(product.description());
+        productResponse.currency(product.price().currency());
+        productResponse.price(product.price().amount());
 
         return ResponseEntity.created(URI.create("")).body(productResponse);
     }
