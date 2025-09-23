@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
 import java.net.URI;
+import java.util.UUID;
 
 @RestController
 public class ProductsController implements ProductsApi
@@ -18,6 +19,11 @@ public class ProductsController implements ProductsApi
 
     public ProductsController(ProductUseCase productUseCase) {
         this.productUseCase = productUseCase;
+    }
+
+    @Override
+    public ResponseEntity<WebProductResponse> getProductById(UUID id) {
+        return ProductsApi.super.getProductById(id);
     }
 
     @Override

@@ -9,6 +9,33 @@ tags:
   - name: CatalogApi
 
 paths:
+  /api/v1/products/{id}:
+    get:
+      summary: This endpoint returns product details in database if product with given id exists.
+      operationId: getProductById
+      tags:
+        - Products
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Product's id
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Found product
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebProductResponse'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /api/v1/products:
     post:
       summary: This endpoint creates a new product in database if request is valid.
