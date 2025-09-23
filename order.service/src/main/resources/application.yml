@@ -9,5 +9,23 @@ spring:
     url: "jdbc:postgresql://localhost:5435/order-service"
     username: postgres
     password: test
+  cloud:
+    function:
+      definition: outboxPublisher
+    stream:
+      bindings:
+        outboxPublisher-out-0:
+          destination: order-events
+          contentType: application/json
+      kafka:
+        binder:
+          brokers: localhost:9094
+        bindings:
+          outboxPublisher-out-0:
+            producer:
+              configuration:
+                acks: all
+                enable.idempotence: true
 server:
   port: 8081
+

@@ -4,6 +4,7 @@ import com.turkcell.orderservice.client.CatalogClient;
 import com.turkcell.orderservice.contract.GetProductByIdResponse;
 import com.turkcell.orderservice.dto.CreateOrderDto;
 import org.springframework.http.HttpStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
