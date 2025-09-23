@@ -6,6 +6,9 @@ import com.turkcell.catalog.service.domain.Product;
 import com.turkcell.catalog.service.domain.ProductId;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+import java.util.UUID;
+
 @Repository
 public class ProductRepositoryAdapter  implements ProductRepository
 {
@@ -37,5 +40,26 @@ public class ProductRepositoryAdapter  implements ProductRepository
                 null
         );
         return productResponse;
+    }
+
+    @Override
+    public Optional<Product> getById(UUID id) {
+        Optional<ProductEntity> productEntityOptional = springDataProductRepository.findById(id);
+
+        if(productEntityOptional.isPresent()) {
+            ProductEntity productEntity = productEntityOptional.get();
+            Product product = new Product(
+                    new ProductId(productEntity.getId()),
+                    productEntity.getName(),
+                    productEntity.getDescription(),
+                    new Money(productEntity.getPrice(), productEntity.getCurrency()),
+                    productEntity.getStock(),
+                    null,
+                    null
+            );
+            return Optional.of(product);
+        }
+
+        return Optional.empty();
     }
 }

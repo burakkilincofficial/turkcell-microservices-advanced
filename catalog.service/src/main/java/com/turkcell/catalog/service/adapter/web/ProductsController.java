@@ -23,7 +23,14 @@ public class ProductsController implements ProductsApi
 
     @Override
     public ResponseEntity<WebProductResponse> getProductById(UUID id) {
-        return ProductsApi.super.getProductById(id);
+        var response = productUseCase.getById(id);
+
+        WebProductResponse webProductResponse = new WebProductResponse();
+        webProductResponse.setId(response.id().value());
+        webProductResponse.setName(response.name());
+        webProductResponse.stock(new BigDecimal(response.stock()));
+
+        return ResponseEntity.ok(webProductResponse);
     }
 
     @Override

@@ -4,7 +4,10 @@ import com.turkcell.catalog.service.application.port.in.ProductUseCase;
 import com.turkcell.catalog.service.application.port.out.ProductRepository;
 import com.turkcell.catalog.service.domain.Money;
 import com.turkcell.catalog.service.domain.Product;
+import jakarta.ws.rs.NotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 @Service
 public class ProductService implements ProductUseCase
@@ -26,5 +29,12 @@ public class ProductService implements ProductUseCase
                 null);
 
         return productRepository.save(product);
+    }
+
+    @Override
+    public Product getById(UUID id) {
+        return productRepository
+                .getById(id)
+                .orElseThrow(() -> new NotFoundException("Product with id " + id + " not found"));
     }
 }
