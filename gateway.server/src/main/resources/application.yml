@@ -1,7 +1,15 @@
 spring:
   application:
     name: gateway.server
-
+  cloud:
+    gateway:
+      server:
+        webmvc:
+          routes:
+            - id: catalog-service-static-route
+              uri: http://localhost:8080
+              predicates:
+                - Path=/api/v1/products/**
 
 server:
   port: 8888
