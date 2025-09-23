@@ -13,17 +13,18 @@ spring:
     bootstrap-servers: localhost:9094
   cloud:
     function:
-      definition: outboxPublisher
+      definition: outboxPublisherSupplier
     stream:
       bindings:
-        outboxPublisher-out-0:
+        outboxPublisherSupplier-out-0:
           destination: order-events
           contentType: application/json
       kafka:
         bindings:
-          outboxPublisher-out-0:
+          outboxPublisherSupplier-out-0:
             producer:
               configuration:
+                acks: all
                 enable.idempotence: true
 server:
   port: 8081
