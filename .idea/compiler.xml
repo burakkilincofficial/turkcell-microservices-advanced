@@ -13,11 +13,19 @@
         </processorPath>
         <module name="catalog.service" />
       </profile>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="gatewayserver" />
+        <module name="eurekaserver" />
+      </profile>
       <profile name="Annotation profile for order.service" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/unknown/lombok-unknown.jar" />
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/unknown/lombok-unknown.jar" />
         </processorPath>
         <module name="orderservice" />
@@ -27,6 +35,8 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="catalog.service" options="-parameters" />
+      <module name="eurekaserver" options="-parameters" />
+      <module name="gatewayserver" options="-parameters" />
       <module name="orderservice" options="-parameters" />
     </option>
   </component>
