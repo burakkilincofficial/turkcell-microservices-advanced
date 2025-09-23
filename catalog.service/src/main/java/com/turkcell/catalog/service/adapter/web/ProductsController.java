@@ -21,6 +21,7 @@ public class ProductsController implements ProductsApi
 
     @Override
     public ResponseEntity<WebProductResponse> createProduct(WebProductCreateRequest productCreateRequest) {
+        System.out.println("İstek işleniyor..");
         var command = new ProductUseCase.CreateProductCommand(
                 productCreateRequest.getName(),
                 productCreateRequest.getDescription(),
