@@ -7,7 +7,7 @@ spring:
         webmvc:
           routes:
             - id: catalog-service-static-route
-              uri: http://localhost:8080
+              uri: lb://catalog-service
               predicates:
                 - Path=/api/v1/products/**
 

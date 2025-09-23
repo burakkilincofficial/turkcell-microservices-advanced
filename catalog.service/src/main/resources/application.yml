@@ -9,3 +9,10 @@ spring:
     url: "jdbc:postgresql://localhost:5435/catalog-service"
     username: postgres
     password: test
+
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
