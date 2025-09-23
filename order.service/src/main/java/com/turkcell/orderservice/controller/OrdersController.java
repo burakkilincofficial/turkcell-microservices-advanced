@@ -1,8 +1,17 @@
 package com.turkcell.orderservice.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.turkcell.orderservice.client.CatalogClient;
 import com.turkcell.orderservice.contract.GetProductByIdResponse;
 import com.turkcell.orderservice.dto.CreateOrderDto;
+import com.turkcell.orderservice.entity.Order;
+import com.turkcell.orderservice.entity.OrderItem;
+import com.turkcell.orderservice.outbox.OutboxMessage;
+import com.turkcell.orderservice.repository.OrderItemRepository;
+import com.turkcell.orderservice.repository.OrderRepository;
+import com.turkcell.orderservice.repository.OutboxRepository;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +22,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/orders")
@@ -20,26 +30,48 @@ public class OrdersController {
 
     private final RestTemplate restTemplate;
     private final CatalogClient catalogClient;
-
-    public OrdersController(RestTemplate restTemplate, CatalogClient catalogClient) {
+    private final OrderRepository orderRepository;
+    private final OrderItemRepository orderItemRepository;
+    private final ObjectMapper objectMapper;
+    private final OutboxRepository outboxRepository;
+    public OrdersController(RestTemplate restTemplate, CatalogClient catalogClient, OrderRepository orderRepository, OrderItemRepository orderItemRepository, ObjectMapper objectMapper, OutboxRepository outboxRepository) {
         this.restTemplate = restTemplate;
         this.catalogClient = catalogClient;
+        this.orderRepository = orderRepository;
+        this.orderItemRepository = orderItemRepository;
+        this.objectMapper = objectMapper;
+        this.outboxRepository = outboxRepository;
     }
 
     @PostMapping
-    public String addOrder(@RequestBody List<CreateOrderDto> orders) {
-        //....CatalogService'e git her bir ürün için istenen miktarın stokda olup olmadığını kontrol et.
-        for (CreateOrderDto order : orders) {
-            /*var response = restTemplate
-                    .getForEntity("http://localhost:8888/api/v1/products/"+order.getProductId(), GetProductByIdResponse.class);
-            if (response.getStatusCode() != HttpStatus.OK  || order.getQuantity() > response.getBody().getStock())
-                throw new RuntimeException("Sorry, you don't have enough stock");*/
+    @Transactional
+    public String addOrder(@RequestBody List<CreateOrderDto> orders)
+            throws JsonProcessingException {
+        Order order = new Order();
+        order.setCustomerId(UUID.randomUUID());
+        order.setStatus("PENDING");
+        order = orderRepository.save(order);
 
-            var response = catalogClient.getProductById(order.getProductId());
-            if (order.getQuantity() > response.stock())
+        for (CreateOrderDto orderDto : orders) {
+            var response = catalogClient.getProductById(orderDto.getProductId());
+            if (orderDto.getQuantity() > response.stock())
                 throw new RuntimeException("Sorry, you don't have enough stock");
+
+            OrderItem orderItem = new OrderItem();
+            orderItem.setProductId(orderDto.getProductId());
+            orderItem.setQuantity(orderDto.getQuantity());
+            orderItem.setUnitPrice(response.price());
+            orderItem.setOrder(order);
+            orderItemRepository.save(orderItem);
         }
 
+
+        OutboxMessage outboxMessage = new OutboxMessage();
+        outboxMessage.setAggregateType("Order");
+        outboxMessage.setAggregateId(order.getId());
+        outboxMessage.setType("OrderCreated");
+        outboxMessage.setPayloadJson(objectMapper.writeValueAsString(outboxMessage));
+        outboxRepository.save(outboxMessage);
         return "Sipariş Başarılı";
     }
 }
