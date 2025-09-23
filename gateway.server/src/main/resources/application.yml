@@ -6,10 +6,14 @@ spring:
       server:
         webmvc:
           routes:
-            - id: catalog-service-static-route
+            - id: catalog-service-route
               uri: lb://catalog-service
               predicates:
                 - Path=/api/v1/products/**
+            - id: order-service-route
+              uri: lb://order-service
+              predicates:
+                - Path=/api/v1/orders/**
 
 server:
   port: 8888
