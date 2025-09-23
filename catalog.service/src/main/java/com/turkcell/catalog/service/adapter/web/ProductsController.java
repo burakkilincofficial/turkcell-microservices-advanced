@@ -1,6 +1,7 @@
 package com.turkcell.catalog.service.adapter.web;
 
 import com.turkcell.catalog.service.application.port.in.ProductUseCase;
+import com.turkcell.catalog.service.domain.ProductId;
 import com.turkcell.catalog.service.generated.api.ProductsApi;
 import com.turkcell.catalog.service.generated.model.WebProductCreateRequest;
 import com.turkcell.catalog.service.generated.model.WebProductResponse;
@@ -26,16 +27,19 @@ public class ProductsController implements ProductsApi
                 productCreateRequest.getName(),
                 productCreateRequest.getDescription(),
                 productCreateRequest.getPrice(),
-                productCreateRequest.getCurrency()
+                productCreateRequest.getCurrency(),
+                productCreateRequest.getStock().intValue()
         );
 
         var product = productUseCase.createProduct(command);
 
         WebProductResponse productResponse = new WebProductResponse();
+        productResponse.id(product.id().value());
         productResponse.name(product.name());
         productResponse.description(product.description());
         productResponse.currency(product.price().currency());
         productResponse.price(product.price().amount());
+        productResponse.stock(new BigDecimal(product.stock()));
 
         return ResponseEntity.created(URI.create("")).body(productResponse);
     }

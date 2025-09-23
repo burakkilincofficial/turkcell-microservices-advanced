@@ -21,6 +21,15 @@ public class ProductEntity
     private String description;
     private BigDecimal price;
     private String currency;
+    private int stock;
+
+    public int getStock() {
+        return stock;
+    }
+
+    public void setStock(int stock) {
+        this.stock = stock;
+    }
 
     public UUID getId() {
         return id;

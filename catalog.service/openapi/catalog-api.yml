@@ -50,18 +50,20 @@ components:
         message: {type: string}
     WebProductResponse:
       type: object
-      required: [ id, name, price ]
+      required: [ id, name, price,currency, stock ]
       properties:
         id: { type: string, format: uuid }
         name: { type: string, minLength: 1, maxLength: 255 }
         price: { type: number, format: BigDecimal, minimum: 0 }
         description: { type: string, maxLength: 2000 }
         currency: { type: string, maxLength: 10 }
+        stock: {type: number, minimum: 0, format: Integer }
     WebProductCreateRequest:
       type: object
-      required: [name,price]
+      required: [name,price,stock,currency]
       properties:
         name:  { type: string, minLength: 1, maxLength: 255 }
         price: { type: number, format: BigDecimal, minimum: 0 }
         description: { type: string, maxLength: 2000 }
         currency: { type: string, maxLength: 10 }
+        stock: {type: number, minimum: 0, format: Integer }

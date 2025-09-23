@@ -21,6 +21,7 @@ public class ProductService implements ProductUseCase
                 command.description(),
                 new Money(command.price(),
                 command.currency()),
+                command.stock(),
                 null,
                 null);
 

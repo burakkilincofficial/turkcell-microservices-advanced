@@ -9,5 +9,5 @@ import java.math.BigDecimal;
 public interface ProductUseCase {
     Product createProduct(CreateProductCommand command);
 
-    record CreateProductCommand(String name, String description, BigDecimal price, String currency){}
+    record CreateProductCommand(String name, String description, BigDecimal price, String currency, int stock){}
 }

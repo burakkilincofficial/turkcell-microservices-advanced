@@ -23,6 +23,7 @@ public class ProductRepositoryAdapter  implements ProductRepository
         productEntity.setCurrency(product.price().currency());
         productEntity.setDescription(product.description());
         productEntity.setName(product.name());
+        productEntity.setStock(product.stock());
 
         productEntity = springDataProductRepository.save(productEntity);
 
@@ -31,6 +32,7 @@ public class ProductRepositoryAdapter  implements ProductRepository
                 productEntity.getName(),
                 productEntity.getDescription(),
                 new Money(productEntity.getPrice(), productEntity.getCurrency()),
+                productEntity.getStock(),
                 null,
                 null
         );

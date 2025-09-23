@@ -12,16 +12,19 @@ public class Product {
     private Money price;
     private OffsetDateTime createdAt;
     private OffsetDateTime updatedAt;
+    private int stock;
 
     public Product(String name,
                    String description,
                    Money price,
+                   int stock,
                    OffsetDateTime createdAt,
                    OffsetDateTime updatedAt) {
         this.id = new ProductId(UUID.randomUUID());
         rename(name);
         redescribe(description);
         reprice(price);
+        restock(stock);
         this.createdAt = createdAt != null ? createdAt : OffsetDateTime.now();
         this.updatedAt = updatedAt != null ? updatedAt : OffsetDateTime.now();
     }
@@ -30,12 +33,14 @@ public class Product {
                    String name,
                    String description,
                    Money price,
+                   int stock,
                    OffsetDateTime createdAt,
                    OffsetDateTime updatedAt) {
         this.id = Objects.requireNonNull(id, "id must not be null");
         rename(name);
         redescribe(description);
         reprice(price);
+        restock(stock);
         this.createdAt = createdAt != null ? createdAt : OffsetDateTime.now();
         this.updatedAt = updatedAt != null ? updatedAt : OffsetDateTime.now();
     }
@@ -62,6 +67,13 @@ public class Product {
         touch();
     }
 
+    public void restock(int stock)
+    {
+        if (stock < 0) throw new RuntimeException();
+        this.stock = stock;
+        touch();
+    }
+
     public void touch() {updatedAt = OffsetDateTime.now();}
 
     /* Getters */
@@ -80,6 +92,8 @@ public class Product {
     public Money price() {
         return price;
     }
+
+    public int stock() {return stock;}
 
     public OffsetDateTime createdAt() {
         return createdAt;
