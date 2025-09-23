@@ -23,7 +23,7 @@ public class OutboxMessage
     private UUID aggregateId;
     @Column(nullable = false)
     private String type;
-    @Column(nullable = false)
+    @Column(nullable = false, length = 5000)
     private String payloadJson;
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
