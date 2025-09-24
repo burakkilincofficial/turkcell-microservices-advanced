@@ -6,6 +6,7 @@ import com.turkcell.catalog.service.application.port.out.ProductRepository;
 import com.turkcell.catalog.service.domain.Money;
 import com.turkcell.catalog.service.domain.Product;
 import jakarta.ws.rs.NotFoundException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -34,6 +35,7 @@ public class ProductService implements ProductUseCase
     }
 
     @Override
+    @PreAuthorize("hasAuthority('product.read')") // İş mantığı metodu çalışmasında önce uygula.
     public Product getById(UUID id) {
         return productRepository
                 .getById(id)

@@ -3,6 +3,7 @@ package com.turkcell.catalog.service.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.GrantedAuthority;
@@ -18,6 +19,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Configuration
+@EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig
 {
     @Bean
@@ -27,7 +29,7 @@ public class SecurityConfig
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth ->
                         auth
-                        .requestMatchers("/actuator/**").permitAll()
+                        .requestMatchers("/actuator/**").permitAll() // Resource-Level Security
                         .requestMatchers(HttpMethod.POST, "/api/v1/products/**").hasAnyAuthority("ADMIN")
                         .anyRequest().authenticated()
                 ).oauth2ResourceServer(

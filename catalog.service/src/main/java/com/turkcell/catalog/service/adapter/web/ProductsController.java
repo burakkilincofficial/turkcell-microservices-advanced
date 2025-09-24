@@ -6,6 +6,11 @@ import com.turkcell.catalog.service.generated.api.ProductsApi;
 import com.turkcell.catalog.service.generated.model.WebProductCreateRequest;
 import com.turkcell.catalog.service.generated.model.WebProductResponse;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
@@ -19,6 +24,19 @@ public class ProductsController implements ProductsApi
 
     public ProductsController(ProductUseCase productUseCase) {
         this.productUseCase = productUseCase;
+    }
+
+    @GetMapping("me/{username}")
+    @PreAuthorize("hasAuthority('ADMIN') and #username == authentication.token.claims['preferred_username']")
+    public String me(@PathVariable String username) {
+        return "";
+    }
+
+    @GetMapping("me")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public String me(@AuthenticationPrincipal Jwt jwt) {
+        System.out.println(jwt.getClaim("preferred_username").toString());
+        return "";
     }
 
     @Override
