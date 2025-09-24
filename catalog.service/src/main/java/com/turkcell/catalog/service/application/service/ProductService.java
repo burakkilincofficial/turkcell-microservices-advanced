@@ -35,7 +35,7 @@ public class ProductService implements ProductUseCase
     }
 
     @Override
-    @PreAuthorize("hasAuthority('product.read')") // İş mantığı metodu çalışmasında önce uygula.
+    //@PreAuthorize("hasAuthority('product.read')") // İş mantığı metodu çalışmasında önce uygula.
     public Product getById(UUID id) {
         return productRepository
                 .getById(id)

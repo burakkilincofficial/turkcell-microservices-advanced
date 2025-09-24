@@ -92,9 +92,6 @@ public class OrdersController {
     @GetMapping
     //@PostAuthorize("returnObject.customerId == authentication.token.claims['sub']")
     public Order getOrder(@AuthenticationPrincipal Jwt jwt) {
-        // CustomerId bul..
-        // Repository'e bununla filtre gönder.
-
         Order order = new Order();
         order.setCustomerId(UUID.fromString("361f73a2-8d6f-4a83-9918-0fbf902543bf"));
         return order;

@@ -1,15 +1,31 @@
 spring:
   application:
     name: gateway.server
+  data:
+    redis:
+      host: localhost
+      port: 6379
   cloud:
     gateway:
+      # Proxy arkasındaki gerçek ip'yi almak için.
       server:
-        webmvc:
+        webflux:
+          forwarded:
+            enabled: true
+          x-forwarded:
+            enabled: true
           routes:
             - id: catalog-service-route
               uri: lb://catalog-service
               predicates:
                 - Path=/api/v1/products/**
+              filters:
+                - name: RequestRateLimiter
+                  args:
+                    key-resolver: "#{@ipKeyResolver}"
+                    redis-rate-limiter.replenishRate: 60 # her saniye kovaya kaç token eklenecek?
+                    redis-rate-limiter.burstCapacity: 10 # kovanın alabileceği max. token sayısı?
+                    redis-rate-limiter.requestedTokens: 1 # her isteğin harcayağı token sayısı.
             - id: order-service-route
               uri: lb://order.service
               predicates:
