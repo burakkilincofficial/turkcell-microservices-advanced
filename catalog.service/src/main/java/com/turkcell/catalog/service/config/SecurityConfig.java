@@ -37,7 +37,8 @@ public class SecurityConfig
                 );
         return http.build();
     }
-
+    // HasAnyRole => ("ADMIN") -> ROLE_ADMIN
+    // HasAnyAuthority => ("ADMIN") -> ADMIN
     @Bean
     JwtAuthenticationConverter keyCloakAuthenticationConverter() {
         JwtAuthenticationConverter keyCloakAuthenticationConverter = new JwtAuthenticationConverter();
@@ -68,7 +69,9 @@ public class SecurityConfig
             }
         }
 
-        return roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toSet());
+        return roles.stream()
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toSet());
     }
 
 }
