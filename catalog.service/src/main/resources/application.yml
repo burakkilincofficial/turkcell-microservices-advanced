@@ -5,11 +5,29 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update
+  kafka:
+    bootstrap-servers: localhost:9094
   datasource:
     url: "jdbc:postgresql://localhost:5435/catalog-service"
     username: postgres
     password: test
-
+  cloud:
+    function:
+      definition: orderCreatedConsumer
+    stream:
+      bindings:
+        orderCreatedConsumer-in-0:
+          destination: order-events
+          group: catalog-service #mesaj her instance'a değil gruba bir kere gönderilsin.
+          contentType: application/json
+      kafka:
+        bindings:
+          orderCreatedConsumer-in-0:
+            consumer:
+              enable-dlq: true
+              dlq-name: order-events.DLQ.catalog-service
+              maxAttempts: 5
+              backOffInitialInterval: 500
 eureka:
   client:
     fetch-registry: true
