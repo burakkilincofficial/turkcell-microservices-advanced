@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -43,6 +44,9 @@ public class OrdersController {
         this.outboxRepository = outboxRepository;
     }
 
+
+    public record OrderCreatedPayload(UUID orderId, UUID customerId, List<OrderItemPayload> items) {}
+    public record OrderItemPayload(UUID productId, int quantity, BigDecimal unitPrice) {}
     @PostMapping
     @Transactional
     public String addOrder(@RequestBody List<CreateOrderDto> orders)
@@ -65,12 +69,21 @@ public class OrdersController {
             orderItemRepository.save(orderItem);
         }
 
+        //order.setTotalPrice(order.getItems());
+        List<OrdersController.OrderItemPayload> itemPayloads = orderItemRepository
+                .findByOrderId(order.getId())
+                .stream()
+                .map(oi -> new OrdersController.OrderItemPayload(oi.getProductId(), oi.getQuantity(), oi.getUnitPrice()))
+                .toList();
+
+        OrdersController.OrderCreatedPayload orderCreatedPayload =
+                new OrdersController.OrderCreatedPayload(order.getId(), order.getCustomerId(), itemPayloads);
 
         OutboxMessage outboxMessage = new OutboxMessage();
         outboxMessage.setAggregateType("Order");
         outboxMessage.setAggregateId(order.getId());
         outboxMessage.setType("OrderCreated");
-        outboxMessage.setPayloadJson(objectMapper.writeValueAsString(outboxMessage));
+        outboxMessage.setPayloadJson(objectMapper.writeValueAsString(orderCreatedPayload));
         outboxRepository.save(outboxMessage);
         return "Sipariş Başarılı";
     }

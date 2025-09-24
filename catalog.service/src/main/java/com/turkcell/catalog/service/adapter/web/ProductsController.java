@@ -29,6 +29,9 @@ public class ProductsController implements ProductsApi
         webProductResponse.setId(response.id().value());
         webProductResponse.setName(response.name());
         webProductResponse.stock(new BigDecimal(response.stock()));
+        webProductResponse.price(response.price().amount());
+        webProductResponse.description(response.description());
+        webProductResponse.currency(response.price().currency());
 
         return ResponseEntity.ok(webProductResponse);
     }

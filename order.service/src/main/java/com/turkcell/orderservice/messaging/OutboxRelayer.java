@@ -3,6 +3,7 @@ package com.turkcell.orderservice.messaging;
 import com.turkcell.orderservice.outbox.OutboxMessage;
 import com.turkcell.orderservice.outbox.OutboxStatus;
 import com.turkcell.orderservice.repository.OutboxRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.messaging.Message;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -19,8 +20,10 @@ public class OutboxRelayer {
     private final OutboxPublisher outboxPublisher;
     private final StreamBridge streamBridge;
 
-    private int batchSize = 100;
-    private int maxAttempts = 10;
+    @Value("${app.outbox.poll.batch-size}")
+    private int BATCH_SIZE;
+    @Value("${app.outbox.poll.max-attempts}")
+    private int MAX_ATTEMPTS;
 
     private static final String BINDING_NAME = "outboxPublisherSupplier-out-0";
     public OutboxRelayer(OutboxRepository outboxRepository, OutboxPublisher outboxPublisher, StreamBridge streamBridge) {
@@ -31,7 +34,7 @@ public class OutboxRelayer {
     @Scheduled(fixedDelayString = "${app.outbox.poll.interval-ms:1000}")
     public void pollAndPublish() {
         System.out.println("Polling");
-        List<OutboxMessage> messagesToProcess = outboxRepository.findBatchPending(batchSize);
+        List<OutboxMessage> messagesToProcess = outboxRepository.findBatchPending(BATCH_SIZE);
 
         for (OutboxMessage message : messagesToProcess) {
             try{
@@ -50,7 +53,7 @@ public class OutboxRelayer {
                 int next = message.getRetryCount() + 1;
                 message.setRetryCount(next);
 
-                if(next >= maxAttempts) {
+                if(next >= MAX_ATTEMPTS) {
                     message.setStatus(OutboxStatus.FAILED);
                     message.setProcessedAt(OffsetDateTime.now());
                 }

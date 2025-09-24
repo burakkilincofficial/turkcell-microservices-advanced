@@ -29,3 +29,9 @@ spring:
 server:
   port: 8081
 
+app:
+  outbox:
+    poll:
+      max-attempts: 10
+      interval-ms: 1000
+      batch-size: 100
