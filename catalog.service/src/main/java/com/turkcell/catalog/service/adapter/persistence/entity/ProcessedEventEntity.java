@@ -20,4 +20,40 @@ public class ProcessedEventEntity {
     private String eventType;
     @Column(nullable = false)
     private OffsetDateTime processedAt = OffsetDateTime.now();
+
+    public UUID id() {
+        return id;
+    }
+
+    public ProcessedEventEntity setId(UUID id) {
+        this.id = id;
+        return this;
+    }
+
+    public UUID eventId() {
+        return eventId;
+    }
+
+    public ProcessedEventEntity setEventId(UUID eventId) {
+        this.eventId = eventId;
+        return this;
+    }
+
+    public String eventType() {
+        return eventType;
+    }
+
+    public ProcessedEventEntity setEventType(String eventType) {
+        this.eventType = eventType;
+        return this;
+    }
+
+    public OffsetDateTime processedAt() {
+        return processedAt;
+    }
+
+    public ProcessedEventEntity setProcessedAt(OffsetDateTime processedAt) {
+        this.processedAt = processedAt;
+        return this;
+    }
 }

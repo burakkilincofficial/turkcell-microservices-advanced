@@ -8,4 +8,5 @@ import java.util.UUID;
 public interface ProcessedEventRepository
 {
     Optional<ProcessedEvent> getProcessedEventByEventId(UUID eventId);
+    ProcessedEvent save(UUID eventId, String eventType);
 }
