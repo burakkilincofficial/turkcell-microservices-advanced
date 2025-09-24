@@ -31,6 +31,11 @@ spring:
             consumer:
               enable-dlq: true
               dlq-name: order-events.DLQ.catalog-service
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8003/realms/turkcell-ecommerce-dev
 eureka:
   client:
     fetch-registry: true
@@ -38,4 +43,8 @@ eureka:
     service-url:
       defaultZone: http://localhost:8761/eureka/
 
-# 10.10
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
