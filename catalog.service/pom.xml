@@ -105,10 +105,21 @@
 			<artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.github.vladimir-bukhtoyarov</groupId>
+			<groupId>com.bucket4j</groupId>
 			<artifactId>bucket4j-core</artifactId>
-			<version>8.0.1</version>
+			<version>8.10.1</version>
 		</dependency>
+		<dependency>
+			<groupId>com.bucket4j</groupId>
+			<artifactId>bucket4j-redis</artifactId>
+			<version>8.10.1</version>
+		</dependency>
+		<dependency>
+			<groupId>io.lettuce</groupId>
+			<artifactId>lettuce-core</artifactId>
+			<version>6.5.3.RELEASE</version>
+		</dependency>
+
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>

@@ -36,6 +36,9 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: http://localhost:8003/realms/turkcell-ecommerce-dev
+  data:
+    redis:
+      uri: redis://localhost:6379
 eureka:
   client:
     fetch-registry: true
