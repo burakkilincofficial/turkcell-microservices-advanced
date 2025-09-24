@@ -13,24 +13,29 @@ spring:
     password: test
   cloud:
     function:
-      definition: orderCreatedConsumer
+      definition: orderCreatedConsumerFunction
     stream:
       bindings:
-        orderCreatedConsumer-in-0:
+        orderCreatedConsumerFunction-in-0:
           destination: order-events
           group: catalog-service #mesaj her instance'a değil gruba bir kere gönderilsin.
           contentType: application/json
+          consumer:
+            max-attempts: 5
+            back-off-initial-interval: 500
+            back-off-max-interval: 5000
+            back-off-multiplier: 2.0
       kafka:
         bindings:
-          orderCreatedConsumer-in-0:
+          orderCreatedConsumerFunction-in-0:
             consumer:
               enable-dlq: true
               dlq-name: order-events.DLQ.catalog-service
-              maxAttempts: 5
-              backOffInitialInterval: 500
 eureka:
   client:
     fetch-registry: true
     register-with-eureka: true
     service-url:
       defaultZone: http://localhost:8761/eureka/
+
+# 10.10

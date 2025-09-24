@@ -1,9 +1,8 @@
-package com.turkcell.catalog.service.adapter.persistence;
+package com.turkcell.catalog.service.adapter.persistence.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.UuidGenerator;
 
 import java.math.BigDecimal;
 import java.util.UUID;

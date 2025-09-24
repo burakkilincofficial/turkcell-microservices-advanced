@@ -1,5 +1,6 @@
-package com.turkcell.catalog.service.adapter.persistence;
+package com.turkcell.catalog.service.adapter.persistence.repo;
 
+import com.turkcell.catalog.service.adapter.persistence.entity.ProductEntity;
 import com.turkcell.catalog.service.application.port.out.ProductRepository;
 import com.turkcell.catalog.service.domain.Money;
 import com.turkcell.catalog.service.domain.Product;
