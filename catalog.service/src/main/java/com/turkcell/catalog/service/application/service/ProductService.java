@@ -1,6 +1,7 @@
 package com.turkcell.catalog.service.application.service;
 
 import com.turkcell.catalog.service.application.port.in.ProductUseCase;
+import com.turkcell.catalog.service.application.port.out.ProcessedEventRepository;
 import com.turkcell.catalog.service.application.port.out.ProductRepository;
 import com.turkcell.catalog.service.domain.Money;
 import com.turkcell.catalog.service.domain.Product;
@@ -13,9 +14,10 @@ import java.util.UUID;
 public class ProductService implements ProductUseCase
 {
     private final ProductRepository productRepository;
-
-    public ProductService(ProductRepository productRepository) {
+    private final ProcessedEventRepository processedEventRepository;
+    public ProductService(ProductRepository productRepository, ProcessedEventRepository processedEventRepository) {
         this.productRepository = productRepository;
+        this.processedEventRepository = processedEventRepository;
     }
 
     @Override
@@ -36,5 +38,13 @@ public class ProductService implements ProductUseCase
         return productRepository
                 .getById(id)
                 .orElseThrow(() -> new NotFoundException("Product with id " + id + " not found"));
+    }
+
+    @Override
+    public void decreaseStock(UUID eventId, UUID productId, int quantity) {
+        var event = processedEventRepository.getProcessedEventByEventId(eventId);
+        if(event.isPresent()) return;
+
+        // ......
     }
 }

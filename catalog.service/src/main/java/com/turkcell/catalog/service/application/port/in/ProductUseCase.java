@@ -10,6 +10,7 @@ import java.util.UUID;
 public interface ProductUseCase {
     Product createProduct(CreateProductCommand command);
     Product getById(UUID id);
+    void decreaseStock(UUID eventId, UUID productId, int quantity);
 
     record CreateProductCommand(String name, String description, BigDecimal price, String currency, int stock){}
 }
