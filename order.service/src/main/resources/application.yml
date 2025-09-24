@@ -27,6 +27,11 @@ spring:
               configuration:
                 acks: all
                 enable.idempotence: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8003/realms/turkcell-ecommerce-dev
 server:
   port: 8081
 

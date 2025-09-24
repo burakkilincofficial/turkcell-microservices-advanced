@@ -13,11 +13,11 @@ import com.turkcell.orderservice.repository.OrderRepository;
 import com.turkcell.orderservice.repository.OutboxRepository;
 import org.aspectj.weaver.ast.Or;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
@@ -86,5 +86,17 @@ public class OrdersController {
         outboxMessage.setPayloadJson(objectMapper.writeValueAsString(orderCreatedPayload));
         outboxRepository.save(outboxMessage);
         return "Sipariş Başarılı";
+    }
+
+    // TODO: Dto
+    @GetMapping
+    //@PostAuthorize("returnObject.customerId == authentication.token.claims['sub']")
+    public Order getOrder(@AuthenticationPrincipal Jwt jwt) {
+        // CustomerId bul..
+        // Repository'e bununla filtre gönder.
+
+        Order order = new Order();
+        order.setCustomerId(UUID.fromString("361f73a2-8d6f-4a83-9918-0fbf902543bf"));
+        return order;
     }
 }
