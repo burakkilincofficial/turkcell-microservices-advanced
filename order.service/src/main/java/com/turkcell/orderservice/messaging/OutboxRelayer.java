@@ -43,7 +43,7 @@ public class OutboxRelayer {
                         message.getType(),
                         message.getEventId().toString()
                 );
-                boolean sent = streamBridge.send(BINDING_NAME, m);
+                boolean sent = streamBridge.send(BINDING_NAME, m); // Broker'a gitti.
                 if(!sent) throw new RuntimeException("Failed to send message");
 
                 message.setStatus(OutboxStatus.SENT);

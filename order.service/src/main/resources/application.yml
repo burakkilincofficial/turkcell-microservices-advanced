@@ -23,6 +23,7 @@ spring:
         bindings:
           outboxPublisherSupplier-out-0:
             producer:
+              sync: true #ACK gelene kadar send isteğini blokla, ACK oldugunda true yap.
               configuration:
                 acks: all
                 enable.idempotence: true
