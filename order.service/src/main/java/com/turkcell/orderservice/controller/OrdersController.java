@@ -11,6 +11,7 @@ import com.turkcell.orderservice.outbox.OutboxMessage;
 import com.turkcell.orderservice.repository.OrderItemRepository;
 import com.turkcell.orderservice.repository.OrderRepository;
 import com.turkcell.orderservice.repository.OutboxRepository;
+import io.micrometer.observation.annotation.Observed;
 import org.aspectj.weaver.ast.Or;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PostAuthorize;
@@ -27,6 +28,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/orders")
+@Observed(name="orders-controller")
 public class OrdersController {
 
     private final RestTemplate restTemplate;
@@ -49,6 +51,7 @@ public class OrdersController {
     public record OrderItemPayload(UUID productId, int quantity, BigDecimal unitPrice) {}
     @PostMapping
     @Transactional
+    @Observed(name="orders-controller.add-order")
     public String addOrder(@RequestBody List<CreateOrderDto> orders)
             throws JsonProcessingException {
         Order order = new Order();
