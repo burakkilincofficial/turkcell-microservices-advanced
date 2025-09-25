@@ -9,7 +9,7 @@ eureka:
   instance:
     hostname: localhost
   client:
-    register-with-eureka: false # Sunucunun kendisi, kendini tan?tmaya çal??mas?n.
-    fetch-registry: false # Di?er sunucu bilgilerini çekmeye çal??ma.
+    register-with-eureka: false
+    fetch-registry: false
     service-url:
       defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
