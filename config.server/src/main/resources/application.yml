@@ -5,8 +5,8 @@ spring:
     config:
       server:
         git:
-          uri: file:///C:/Users/PC1/Desktop/Projects/Education/Java/advanced-configurations
-          default-label: main # githubdaki hangi branch ismine baks?n?
+          uri: https://github.com/halitkalayci/advanced-configurations.git
+          default-label: master
           search-paths: .
           #clone-on-start: true
 
