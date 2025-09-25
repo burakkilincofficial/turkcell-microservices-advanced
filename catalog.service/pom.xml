@@ -119,7 +119,11 @@
 			<artifactId>lettuce-core</artifactId>
 			<version>6.5.3.RELEASE</version>
 		</dependency>
-
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-config</artifactId>
+			<version>5.0.0-M2</version>
+		</dependency>
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>

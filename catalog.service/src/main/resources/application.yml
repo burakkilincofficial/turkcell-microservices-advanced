@@ -1,53 +1,7 @@
 spring:
   application:
     name: catalog-service
-  jpa:
-    show-sql: true
-    hibernate:
-      ddl-auto: update
-  kafka:
-    bootstrap-servers: localhost:9094
-  datasource:
-    url: "jdbc:postgresql://localhost:5435/catalog-service"
-    username: postgres
-    password: test
-  cloud:
-    function:
-      definition: orderCreatedConsumerFunction
-    stream:
-      bindings:
-        orderCreatedConsumerFunction-in-0:
-          destination: order-events
-          group: catalog-service #mesaj her instance'a değil gruba bir kere gönderilsin.
-          contentType: application/json
-          consumer:
-            max-attempts: 5
-            back-off-initial-interval: 500
-            back-off-max-interval: 5000
-            back-off-multiplier: 2.0
-      kafka:
-        bindings:
-          orderCreatedConsumerFunction-in-0:
-            consumer:
-              enable-dlq: true
-              dlq-name: order-events.DLQ.catalog-service
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: http://localhost:8003/realms/turkcell-ecommerce-dev
-  data:
-    redis:
-      uri: redis://localhost:6379
-eureka:
-  client:
-    fetch-registry: true
-    register-with-eureka: true
-    service-url:
-      defaultZone: http://localhost:8761/eureka/
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
+  profiles:
+    active: dev
+  config:
+    import: "configserver:http://localhost:8787"
