@@ -1,18 +1,21 @@
-# Sıfırdan bir freeDOS makinem olduğunu varsayalım.
-# Bu projeyi bu makineye nasıl kurardım?
-# Bu üreteceğim image'ı maven:3.9-11 21jdk imageından başlat.
-
-#Single Stage Dockerfile
-FROM maven:3.9.11-eclipse-temurin-21
+# Multi-Stage
+# ------------ Build Stage -------------------
+FROM maven:3.9.11-eclipse-temurin-21 AS build
 WORKDIR /app
+
 COPY pom.xml ./
-RUN mvn -q -DskipTests dependency:go-offline
+RUN mvn -q -e -DskipTests dependency:go-offline
+
 COPY src ./src
 RUN mvn -DskipTests clean package
-# Güvenlik Adımları
-#RUN addgroup -g 1000 spring && adduser -D -u 1000 -G spring spring
-#USER spring
-#
+
+# ------------- Runtime Stage ------------------
+FROM eclipse-temurin:21-jre-alpine
+
 EXPOSE 8761
+
 ENV JAVA_OPTS="-XX:MaxRAMPercentage=75.0"
-ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar target/*.jar"]
+
+COPY --from=build /app/target/*.jar /app/app.jar
+
+ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar /app/app.jar"]
