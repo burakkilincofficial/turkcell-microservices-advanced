@@ -9,6 +9,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="gatewayserver" />
         <module name="eurekaserver" />
+        <module name="configserver" />
       </profile>
       <profile name="Annotation profile for catalog.service" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
@@ -25,6 +26,7 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="catalog.service" options="-parameters" />
+      <module name="configserver" options="-parameters" />
       <module name="eurekaserver" options="-parameters" />
       <module name="gatewayserver" options="-parameters" />
       <module name="orderservice" options="-parameters" />

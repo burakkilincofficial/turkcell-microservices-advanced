@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: config.server
+  cloud:
+    config:
+      server:
+        git:
+          uri: file:///C:/Users/PC1/Desktop/Projects/Education/Java/advanced-configurations
+          default-label: main # githubdaki hangi branch ismine baks?n?
+          search-paths: .
+          #clone-on-start: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+server:
+  port: 8787
