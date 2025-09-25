@@ -124,6 +124,12 @@
 			<artifactId>spring-cloud-starter-config</artifactId>
 			<version>5.0.0-M2</version>
 		</dependency>
+
+		<dependency>
+			<groupId>com.github.loki4j</groupId>
+			<artifactId>loki-logback-appender</artifactId>
+			<version>1.5.2</version>
+		</dependency>
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
