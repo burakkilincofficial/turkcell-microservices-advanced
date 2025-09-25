@@ -1,10 +1,12 @@
 package com.turkcell.catalog.service.adapter.web;
 
+import brave.Tracer;
 import com.turkcell.catalog.service.application.port.in.ProductUseCase;
 import com.turkcell.catalog.service.domain.ProductId;
 import com.turkcell.catalog.service.generated.api.ProductsApi;
 import com.turkcell.catalog.service.generated.model.WebProductCreateRequest;
 import com.turkcell.catalog.service.generated.model.WebProductResponse;
+import io.micrometer.observation.annotation.Observed;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -18,12 +20,15 @@ import java.net.URI;
 import java.util.UUID;
 
 @RestController
+@Observed(name="products-controller")
 public class ProductsController implements ProductsApi
 {
     private final ProductUseCase productUseCase;
+    private final Tracer tracer;
 
-    public ProductsController(ProductUseCase productUseCase) {
+    public ProductsController(ProductUseCase productUseCase, Tracer tracer) {
         this.productUseCase = productUseCase;
+        this.tracer = tracer;
     }
 
     @GetMapping("me/{username}")
@@ -34,13 +39,21 @@ public class ProductsController implements ProductsApi
 
     @GetMapping("me")
     @PreAuthorize("hasAuthority('ADMIN')")
+    @Observed(name="products-controller.me")
     public String me(@AuthenticationPrincipal Jwt jwt) {
         System.out.println(jwt.getClaim("preferred_username").toString());
         return "";
     }
 
     @Override
+    @Observed(name="products-controller.get-product-by-id")
     public ResponseEntity<WebProductResponse> getProductById(UUID id) {
+        var span = tracer.currentSpan();
+        if(span!=null)
+        {
+            span.tag("id", id.toString());
+        }
+
         var response = productUseCase.getById(id);
 
         WebProductResponse webProductResponse = new WebProductResponse();

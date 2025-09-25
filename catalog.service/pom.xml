@@ -124,11 +124,19 @@
 			<artifactId>spring-cloud-starter-config</artifactId>
 			<version>5.0.0-M2</version>
 		</dependency>
-
 		<dependency>
 			<groupId>com.github.loki4j</groupId>
 			<artifactId>loki-logback-appender</artifactId>
 			<version>1.5.2</version>
+		</dependency>
+		<dependency>
+			<groupId>io.micrometer</groupId>
+			<artifactId>micrometer-tracing-bridge-brave</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.zipkin.reporter2</groupId>
+			<artifactId>zipkin-reporter-brave</artifactId>
+			<version>3.4.3</version>
 		</dependency>
 	</dependencies>
 	<dependencyManagement>
