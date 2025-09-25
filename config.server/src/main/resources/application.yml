@@ -19,6 +19,7 @@ spring:
           backend: secret
           order: 1
           profile-separator: /
+          kv-version: 2
 
 management:
   endpoints:
