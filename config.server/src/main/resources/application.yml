@@ -1,6 +1,8 @@
 spring:
   application:
     name: config.server
+  profiles:
+    active: git, vault
   cloud:
     config:
       server:
@@ -8,7 +10,15 @@ spring:
           uri: https://github.com/halitkalayci/advanced-configurations.git
           default-label: master
           search-paths: .
-          #clone-on-start: true
+        vault:
+          host: 127.0.0.1
+          port: 8200
+          scheme: http
+          authentication: TOKEN
+          token: ${VAULT_TOKEN:root}
+          backend: secret
+          order: 1
+          profile-separator: /
 
 management:
   endpoints:
